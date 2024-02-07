@@ -20,3 +20,14 @@ app.listen(3000, () => console.log("Listening on port 3000"));
 // routes
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
+
+// creating error middleware
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
+  res.status(statusCode).json({
+    success: false,
+    statusCode,
+    message,
+  });
+});
