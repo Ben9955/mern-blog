@@ -1,7 +1,50 @@
-import { Button, Label, TextInput } from "flowbite-react";
-import { Link } from "react-router-dom";
+import { Alert, Button, Label, TextInput } from "flowbite-react";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+  const [formData, setFormData] = useState({});
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
+  };
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+
+    if (!formData.username || !formData.email || !formData.password) {
+      return setError("Please fill out all fields");
+    }
+
+    try {
+      setIsLoading(true);
+      setError(null);
+
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (data.success === false) {
+        setIsLoading(false);
+        return setError(data.message);
+      }
+      setIsLoading(false);
+
+      navigate("/signin");
+    } catch (error) {
+      setIsLoading(false);
+      setError(error.message);
+    }
+  };
+
   return (
     <div className="min-h-screen mt-20">
       <div className="flex gap-5 flex-col md:flex-row  md:items-center p-3 max-w-3xl mx-auto">
@@ -24,24 +67,44 @@ const SignUp = () => {
 
         {/* right */}
         <div className="flex-1">
-          <form className="flex flex-col gap-4">
+          <form className="flex flex-col gap-4" onSubmit={submitHandler}>
             <div>
               <Label value="Your username" />
-              <TextInput type="text" placeholder="Username" id="username" />
+              <TextInput
+                onChange={handleChange}
+                type="text"
+                placeholder="Username"
+                id="username"
+              />
             </div>
 
             <div>
               <Label value="Your email" />
-              <TextInput type="text" placeholder="name@gmail.com" id="email" />
+              <TextInput
+                onChange={handleChange}
+                type="email"
+                placeholder="name@gmail.com"
+                id="email"
+              />
             </div>
 
             <div>
               <Label value="Your password" />
-              <TextInput type="text" placeholder="Password" id="password" />
+              <TextInput
+                onChange={handleChange}
+                type="password"
+                placeholder="Password"
+                id="password"
+              />
             </div>
 
-            <Button gradientDuoTone="purpleToPink" type="submit">
-              Sign Up
+            <Button
+              gradientDuoTone="purpleToPink"
+              type="submit"
+              disabled={isLoading}
+              isProcessing={isLoading}
+            >
+              {isLoading ? "Loading..." : "Sign Up"}
             </Button>
           </form>
 
@@ -51,6 +114,11 @@ const SignUp = () => {
               Sign In
             </Link>
           </div>
+          {error && (
+            <Alert className="mt-5 " color="failure">
+              {error}
+            </Alert>
+          )}
         </div>
       </div>
     </div>
