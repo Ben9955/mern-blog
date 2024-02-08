@@ -1,12 +1,18 @@
 import { Alert, Button, Label, TextInput } from "flowbite-react";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import {
+  signInFailure,
+  signInStart,
+  signInSuccess,
+} from "../redux/user/userSlice";
 
 const Signin = () => {
   const [formData, setFormData] = useState({});
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, error } = useSelector((state) => state.user);
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -17,12 +23,11 @@ const Signin = () => {
     e.preventDefault();
 
     if (!formData.email || !formData.password) {
-      return setError("Please fill out all fields");
+      return dispatch(signInFailure("Please fill out all fields"));
     }
 
     try {
-      setIsLoading(true);
-      setError(null);
+      dispatch(signInStart());
 
       const res = await fetch("/api/auth/signin", {
         method: "POST",
@@ -33,15 +38,13 @@ const Signin = () => {
       const data = await res.json();
 
       if (data.success === false) {
-        setIsLoading(false);
-        return setError(data.message);
+        return dispatch(signInFailure(data.message));
       }
-      setIsLoading(false);
 
+      dispatch(signInSuccess(data));
       navigate("/");
     } catch (error) {
-      setIsLoading(false);
-      setError(error.message);
+      dispatch(signInFailure(error.message));
     }
   };
 
@@ -55,7 +58,7 @@ const Signin = () => {
             className=" whitespace-nowrap text-4xl font-bold dark:text-white"
           >
             <span className="px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white ">
-              Ben's
+              Ben&apos;s
             </span>
             Blog
           </Link>
