@@ -61,7 +61,7 @@ const SignUp = () => {
           </Link>
 
           <p className="text-sm mt-5">
-            You can sign with you email and password or with Google.
+            You can sign up with you email and password or with Google.
           </p>
         </div>
 
@@ -93,7 +93,7 @@ const SignUp = () => {
               <TextInput
                 onChange={handleChange}
                 type="password"
-                placeholder="Password"
+                placeholder="**********"
                 id="password"
               />
             </div>
