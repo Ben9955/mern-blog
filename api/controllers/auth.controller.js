@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 export const signup = async (req, res, next) => {
   const { username, email, password } = req.body;
-
+  console.log(req.body);
   if (
     !username ||
     !email ||
@@ -34,6 +34,8 @@ export const signup = async (req, res, next) => {
 };
 
 export const signin = async (req, res, next) => {
+  console.log(req.body);
+
   const { email, password } = req.body;
 
   if (!email || !password || email === "" || password === "") {
@@ -51,7 +53,7 @@ export const signin = async (req, res, next) => {
     }
     const token = jwt.sign(
       { id: validUser._id, isAdmin: validUser.isAdmin },
-      process.env.JWT_SECRET
+      process.env.SECRET
     );
 
     const { password: pass, ...rest } = validUser._doc;
@@ -69,10 +71,12 @@ export const signin = async (req, res, next) => {
 
 export const google = async (req, res, next) => {
   const { email, name, googlePhotoUrl } = req.body;
+  console.log(req.body);
+
   try {
     const user = await User.findOne({ email });
     if (user) {
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+      const token = jwt.sign({ id: user._id }, process.env.SECRET);
       const { password, ...rest } = user._doc;
       res
         .status(200)
@@ -94,7 +98,7 @@ export const google = async (req, res, next) => {
         profilePicture: googlePhotoUrl,
       });
       await newUser.save();
-      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+      const token = jwt.sign({ id: newUser._id }, process.env.SECRET);
       const { password, ...rest } = newUser._doc;
       res
         .status(200)

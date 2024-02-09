@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   currentUser: null,
   error: null,
-  isLoading: false,
+  loading: false,
 };
 
 const userSlice = createSlice({
@@ -11,18 +11,16 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     signInStart: (state) => {
-      state.isLoading = true;
+      state.loading = true;
       state.error = null;
     },
-
     signInSuccess: (state, action) => {
       state.currentUser = action.payload;
-      state.isLoading = false;
+      state.loading = false;
       state.error = null;
     },
-
     signInFailure: (state, action) => {
-      state.isLoading = false;
+      state.loading = false;
       state.error = action.payload;
     },
   },
