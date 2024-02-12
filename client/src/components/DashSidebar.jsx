@@ -10,8 +10,7 @@ const DashSidebar = () => {
     const urlParams = new URLSearchParams(location.search);
     const tabFromUrl = urlParams.get("tab");
     if (tabFromUrl) setTab(tabFromUrl);
-  }),
-    [location.search];
+  }, [location.search]);
 
   return (
     <Sidebar className="w-full md:w-56">
@@ -23,6 +22,7 @@ const DashSidebar = () => {
               icon={HiUser}
               label={"User"}
               labelColor="dark"
+              as="button"
             >
               Profile
             </Sidebar.Item>
