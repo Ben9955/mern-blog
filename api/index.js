@@ -1,7 +1,7 @@
 import express, { json } from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-
+import cookieParsel from "cookie-parser";
 import userRouter from "./routes/user.route.js";
 import authRouter from "./routes/auth.route.js";
 
@@ -13,7 +13,9 @@ mongoose
   .catch((err) => console.log(err));
 
 const app = express();
+
 app.use(express.json());
+app.use(cookieParsel()); //  to estract the cookies from the browser
 
 app.listen(3000, () => console.log("Listening on port 3000"));
 
