@@ -2,8 +2,9 @@ import express, { json } from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParsel from "cookie-parser";
-import userRouter from "./routes/user.route.js";
-import authRouter from "./routes/auth.route.js";
+import userRoutes from "./routes/user.route.js";
+import authRoutes from "./routes/auth.route.js";
+import postRoutes from "./routes/post.route.js";
 
 dotenv.config();
 
@@ -20,8 +21,9 @@ app.use(cookieParsel()); //  to estract the cookies from the browser
 app.listen(3000, () => console.log("Listening on port 3000"));
 
 // routes
-app.use("/api/user", userRouter);
-app.use("/api/auth", authRouter);
+app.use("/api/user", userRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/post", postRoutes);
 
 // creating error middleware
 app.use((err, req, res, next) => {
