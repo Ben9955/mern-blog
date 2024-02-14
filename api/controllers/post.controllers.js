@@ -1,5 +1,5 @@
-import Post from "../models/post.model";
-import { errorHandler } from "../utils/error";
+import Post from "../models/post.model.js";
+import { errorHandler } from "../utils/error.js";
 
 export const create = async (req, res, next) => {
   if (!req.user.isAdmin) {
@@ -16,7 +16,9 @@ export const create = async (req, res, next) => {
     .join("-")
     .replace(/[^a-zA-Z0-9]/g, "");
 
-  const newPost = new Post({ ...req.body, slug, userId: req.user._id });
+  console.log(req.user);
+
+  const newPost = new Post({ ...req.body, slug, userId: req.user.id });
 
   try {
     const savedPost = await newPost.save();
