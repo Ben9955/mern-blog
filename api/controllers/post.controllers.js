@@ -66,11 +66,6 @@ export const getPosts = async (req, res, next) => {
       createdAt: { $gte: oneMonthAgo },
     });
 
-    console.log({
-      posts,
-      totalPost,
-      lastMonthPosts,
-    });
     res.status(200).json({
       posts,
       totalPost,
@@ -100,7 +95,6 @@ export const updatePost = async (req, res, next) => {
     return next(errorHandler(403, "You are not allowed to edit this post"));
   }
 
-  console.log(req.params.postId);
   try {
     const updatedPost = await Post.findByIdAndUpdate(
       req.params.postId,
