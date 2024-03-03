@@ -88,6 +88,16 @@ const CommentSection = ({ postId }) => {
     }
   };
 
+  //  edit comment
+
+  const editComment = async (comment, editedContent) => {
+    setComments(
+      comments.map((c) =>
+        c._id === comment._id ? { ...c, content: editedContent } : c
+      )
+    );
+  };
+
   return (
     <div>
       {currentUser ? (
@@ -146,9 +156,9 @@ const CommentSection = ({ postId }) => {
         <p className="text-sm my-5">No comments yet!</p>
       ) : (
         <>
-          <div className="text-sm my-5 flex gap-1">
+          <div className="text-sm my-5 flex items-center gap-1">
             <p>Comments</p>
-            <div className="border border-gray-400 py-1 px-2 rounded-sm">
+            <div className="border border-gray-400 px-2 rounded-sm ">
               <p>{comments.length}</p>
             </div>
           </div>
@@ -158,6 +168,7 @@ const CommentSection = ({ postId }) => {
               key={comment.id}
               comment={comment}
               handleLike={handleLike}
+              onEdit={editComment}
             />
           ))}
         </>
