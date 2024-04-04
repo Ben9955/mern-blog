@@ -49,7 +49,7 @@ const Home = () => {
           <h3 className="text-xl font-semibold lg:text-2xl text-center mb-5">
             Recent Posts
           </h3>
-          <div className="flex flex-wrap justify-center items-center  gap-4 px-10 md:px-40">
+          <div className="flex flex-wrap justify-center items-center  gap-4 px-10 md:px-20">
             {posts &&
               posts.map((post) => <PostCard key={post._id} post={post} />)}
           </div>
